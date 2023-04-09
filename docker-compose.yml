@@ -1,0 +1,27 @@
+version: ‘3’
+
+volumes:
+  db-data:
+
+services:
+  web:
+    build: .
+    image: ruby-test
+    volumes:
+      - '.:/product-register'
+    environment:
+      - 'DATABASE_PASSWORD=postgres'
+    ports:
+      - '3000:3000'
+    tty: true
+    stdin_open: true
+    container_name: ruby-test
+    depends_on:
+      - db
+    links:
+      - db
+
+  db:
+    image: postgres
+    volumes:
+      - 'db-data:/var/lib/postgresql/data'
